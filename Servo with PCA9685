@@ -1,0 +1,91 @@
+import time
+import board
+import busio
+from adafruit_pca9685 import PCA9685
+
+i2c = busio.I2C(board.SCL, board.SDA)
+pca = PCA9685(i2c)
+pca.frequency = 50
+
+def set_servo_position(channel, angle):
+    duty_cycle = int(((angle / 180) * 2 + 0.5) * 4095)
+    pca.channels[channel].duty_cycle = duty_cycle
+
+try:
+    while True:
+        jenis_sampah = input("Masukkan jenis sampah (plastik/kertas/besi/others): ")
+
+        if jenis_sampah == "plastik":
+            set_servo_position(0, 0)
+            set_servo_position(1, 180)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(0, 90)
+            set_servo_position(1, 90)
+            time.sleep(1)
+            
+            set_servo_position(2, 0)
+            set_servo_position(3, 180)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(2, 90)
+            set_servo_position(3, 90)
+            time.sleep(1)
+        
+        elif jenis_sampah == "kertas":
+            set_servo_position(0, 180)
+            set_servo_position(1, 0)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(0, 90)
+            set_servo_position(1, 90)
+            time.sleep(1)
+            
+            set_servo_position(2, 0)
+            set_servo_position(3, 180)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(2, 90)
+            set_servo_position(3, 90)
+            time.sleep(1)
+
+        elif jenis_sampah == "besi":
+            set_servo_position(0, 180)
+            set_servo_position(1, 0)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(0, 90)
+            set_servo_position(1, 90)
+            time.sleep(1)
+            
+            set_servo_position(2, 180)
+            set_servo_position(3, 0)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(2, 90)
+            set_servo_position(3, 90)
+            time.sleep(1)
+
+        else:
+            set_servo_position(0, 0)
+            set_servo_position(1, 180)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(0, 90)
+            set_servo_position(1, 90)
+            time.sleep(1)
+            
+            set_servo_position(2, 180)
+            set_servo_position(3, 0)
+            time.sleep(1)
+            time.sleep(3)
+            set_servo_position(2, 90)
+            set_servo_position(3, 90)
+            time.sleep(1)
+
+        while pca.channels[3].duty_cycle != 0:
+            pass
+        break
+        
+except KeyboardInterrupt:
+    pca.deinit()
