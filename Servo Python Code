@@ -1,0 +1,131 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+
+servo1_pin = 17
+servo2_pin = 18
+servo3_pin = 22
+servo4_pin = 23
+
+GPIO.setup(servo1_pin, GPIO.OUT)
+GPIO.setup(servo2_pin, GPIO.OUT)
+GPIO.setup(servo3_pin, GPIO.OUT)
+GPIO.setup(servo4_pin, GPIO.OUT)
+
+servo1 = GPIO.PWM(servo1_pin, 50)
+servo2 = GPIO.PWM(servo2_pin, 50)
+servo3 = GPIO.PWM(servo3_pin, 50)
+servo4 = GPIO.PWM(servo4_pin, 50)
+
+servo1.start(0)
+servo2.start(0)
+servo3.start(0)
+servo4.start(0)
+
+try:
+    while True:
+        # Mendeteksi jenis sampah (misalnya "plastik" atau "kertas")
+        jenis_sampah = input("Masukkan jenis sampah (plastik/kertas/besi/others): ")
+
+        if jenis_sampah == "plastik":
+            servo1.ChangeDutyCycle(2.5)  
+            servo2.ChangeDutyCycle(12.5) 
+            time.sleep(1)
+            time.sleep(3)
+            servo1.ChangeDutyCycle(7.5)  
+            servo2.ChangeDutyCycle(7.5)  
+            time.sleep(1)
+            
+            servo3.ChangeDutyCycle(2.5)  
+            servo4.ChangeDutyCycle(12.5)  
+            time.sleep(1)
+            time.sleep(3)
+            servo3.ChangeDutyCycle(7.5) 
+            servo4.ChangeDutyCycle(7.5)  
+            time.sleep(1)
+        
+        elif jenis_sampah == "kertas":
+            servo1.ChangeDutyCycle(12.5)  
+            servo2.ChangeDutyCycle(2.5)   
+            time.sleep(1)
+            time.sleep(3)
+            servo1.ChangeDutyCycle(7.5)   
+            servo2.ChangeDutyCycle(7.5)   
+            time.sleep(1)
+            
+            servo3.ChangeDutyCycle(2.5)  
+            servo4.ChangeDutyCycle(12.5)  
+            time.sleep(1)
+            time.sleep(3)
+            servo3.ChangeDutyCycle(7.5)  
+            servo4.ChangeDutyCycle(7.5)  
+            time.sleep(1)
+
+        elif jenis_sampah == "besi":
+            servo1.ChangeDutyCycle(12.5)
+            servo2.ChangeDutyCycle(2.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo1.ChangeDutyCycle(7.5)
+            servo2.ChangeDutyCycle(7.5)
+            time.sleep(1)
+            
+            servo3.ChangeDutyCycle(12.5)
+            servo4.ChangeDutyCycle(2.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo3.ChangeDutyCycle(7.5)
+            servo4.ChangeDutyCycle(7.5)
+            time.sleep(1)
+
+        elif jenis_sampah == "others":
+            servo1.ChangeDutyCycle(2.5)
+            servo2.ChangeDutyCycle(12.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo1.ChangeDutyCycle(7.5)
+            servo2.ChangeDutyCycle(7.5)
+            time.sleep(1)
+            
+            servo3.ChangeDutyCycle(12.5)
+            servo4.ChangeDutyCycle(2.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo3.ChangeDutyCycle(7.5)
+            servo4.ChangeDutyCycle(7.5)
+            time.sleep(1)
+
+        else:
+            # Jika jenis_sampah tidak sesuai dengan pilihan yang ada, masuk ke bagian "others"
+            servo1.ChangeDutyCycle(2.5)
+            servo2.ChangeDutyCycle(12.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo1.ChangeDutyCycle(7.5)
+            servo2.ChangeDutyCycle(7.5)
+            time.sleep(1)
+            
+            servo3.ChangeDutyCycle(12.5)
+            servo4.ChangeDutyCycle(2.5)
+            time.sleep(1)
+            time.sleep(3)
+            servo3.ChangeDutyCycle(7.5)
+            servo4.ChangeDutyCycle(7.5)
+            time.sleep(1)
+        
+        # Menghentikan semua servo setelah servo 4 kembali ke posisi awal
+        if GPIO.input(servo4_pin) == GPIO.LOW:
+            servo1.stop()
+            servo2.stop()
+            servo3.stop()
+            servo4.stop()
+            GPIO.cleanup()
+            break
+        
+except KeyboardInterrupt:
+    servo1.stop()
+    servo2.stop()
+    servo3.stop()
+    servo4.stop()
+    GPIO.cleanup()
