@@ -1,91 +1,133 @@
+from adafruit_servokit import ServoKit
 import time
-import board
-import busio
-from adafruit_pca9685 import PCA9685
 
-i2c = busio.I2C(board.SCL, board.SDA)
-pca = PCA9685(i2c)
-pca.frequency = 50
+min_duty = 500
+max_duty = 2500
 
-def set_servo_position(channel, angle):
-    duty_cycle = int(((angle / 180) * 2 + 0.5) * 4095)
-    pca.channels[channel].duty_cycle = duty_cycle
+kit = ServoKit(channels=16)
+kit.frequency = 60
 
-try:
-    while True:
-        jenis_sampah = input("Masukkan jenis sampah (plastik/kertas/besi/others): ")
+kit.servo[0].set_pulse_width_range(min_duty, max_duty)
+kit.servo[1].set_pulse_width_range(min_duty, max_duty)
+kit.servo[2].set_pulse_width_range(min_duty, max_duty)
+kit.servo[3].set_pulse_width_range(min_duty, max_duty)
+kit.servo[4].set_pulse_width_range(min_duty, max_duty)
+kit.servo[5].set_pulse_width_range(min_duty, max_duty)
 
-        if jenis_sampah == "plastik":
-            set_servo_position(0, 0)
-            set_servo_position(1, 180)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(0, 90)
-            set_servo_position(1, 90)
-            time.sleep(1)
-            
-            set_servo_position(2, 0)
-            set_servo_position(3, 180)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(2, 90)
-            set_servo_position(3, 90)
-            time.sleep(1)
-        
-        elif jenis_sampah == "kertas":
-            set_servo_position(0, 180)
-            set_servo_position(1, 0)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(0, 90)
-            set_servo_position(1, 90)
-            time.sleep(1)
-            
-            set_servo_position(2, 0)
-            set_servo_position(3, 180)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(2, 90)
-            set_servo_position(3, 90)
-            time.sleep(1)
+while True:
+    jenis_sampah = input("Jenis Sampah : ")
 
-        elif jenis_sampah == "besi":
-            set_servo_position(0, 180)
-            set_servo_position(1, 0)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(0, 90)
-            set_servo_position(1, 90)
-            time.sleep(1)
-            
-            set_servo_position(2, 180)
-            set_servo_position(3, 0)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(2, 90)
-            set_servo_position(3, 90)
-            time.sleep(1)
+    if jenis_sampah == "plastik":
+        kit.servo[0].angle = 50     #plat1
+        kit.servo[1].angle = 130
+        time.sleep(3)
+        kit.servo[0].angle = 90
+        kit.servo[1].angle = 90
+        time.sleep(3)
 
-        else:
-            set_servo_position(0, 0)
-            set_servo_position(1, 180)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(0, 90)
-            set_servo_position(1, 90)
-            time.sleep(1)
-            
-            set_servo_position(2, 180)
-            set_servo_position(3, 0)
-            time.sleep(1)
-            time.sleep(3)
-            set_servo_position(2, 90)
-            set_servo_position(3, 90)
-            time.sleep(1)
+        kit.servo[2].angle = 50     #plat2
+        kit.servo[3].angle = 130
+        time.sleep(3)
+        kit.servo[2].angle = 90
+        kit.servo[3].angle = 90
+        time.sleep(3)
 
-        while pca.channels[3].duty_cycle != 0:
-            pass
+        kit.servo[4].angle = 50     #plat3
+        kit.servo[5].angle = 130
+        time.sleep(3)
+        kit.servo[4].angle = 90
+        kit.servo[5].angle = 90
+        time.sleep(3)
         break
+
+    elif jenis_sampah == "kertas":
+        kit.servo[0].angle = 50
+        kit.servo[1].angle = 130
+        time.sleep(3)
+        kit.servo[0].angle = 90
+        kit.servo[1].angle = 90
+        time.sleep(3)
+
+        kit.servo[2].angle = 50
+        kit.servo[3].angle = 130
+        time.sleep(3)
+        kit.servo[2].angle = 90
+        kit.servo[3].angle = 90
+        time.sleep(3)
+
+        kit.servo[4].angle = 130
+        kit.servo[5].angle = 50
+        time.sleep(3)
+        kit.servo[4].angle = 90
+        kit.servo[5].angle = 90
+        time.sleep(3)
+        break
+
+    elif jenis_sampah == "besi":
+        kit.servo[0].angle = 50
+        kit.servo[1].angle = 130
+        time.sleep(3)
+        kit.servo[0].angle = 90
+        kit.servo[1].angle = 90
+        time.sleep(3)
+
+        kit.servo[2].angle = 130
+        kit.servo[3].angle = 50
+        time.sleep(3)
+        kit.servo[2].angle = 90
+        kit.servo[3].angle = 90
+        time.sleep(3)
+
+        kit.servo[4].angle = 130
+        kit.servo[5].angle = 50
+        time.sleep(3)
+        kit.servo[4].angle = 90
+        kit.servo[5].angle = 90
+        time.sleep(3)
+        break
+
+    elif jenis_sampah == "others":
+        kit.servo[0].angle = 50
+        kit.servo[1].angle = 130
+        time.sleep(3)
+        kit.servo[0].angle = 90
+        kit.servo[1].angle = 90
+        time.sleep(3)
         
-except KeyboardInterrupt:
-    pca.deinit()
+        kit.servo[2].angle = 130
+        kit.servo[3].angle = 50
+        time.sleep(3)
+        kit.servo[2].angle = 90
+        kit.servo[3].angle = 90
+        time.sleep(3)
+
+        kit.servo[4].angle = 50
+        kit.servo[5].angle = 130
+        time.sleep(3)
+        kit.servo[4].angle = 90
+        kit.servo[5].angle = 90
+        time.sleep(3)
+        break
+
+    else:
+        kit.servo[0].angle = 50
+        kit.servo[1].angle = 130
+        time.sleep(3)
+        kit.servo[0].angle = 90
+        kit.servo[1].angle = 90
+        time.sleep(3)
+        
+        kit.servo[2].angle = 130
+        kit.servo[3].angle = 50
+        time.sleep(3)
+        kit.servo[2].angle = 90
+        kit.servo[3].angle = 90
+        time.sleep(3)
+
+        kit.servo[4].angle = 50
+        kit.servo[5].angle = 130
+        time.sleep(3)
+        kit.servo[4].angle = 90
+        kit.servo[5].angle = 90
+        time.sleep(3)
+        break
